@@ -1,0 +1,132 @@
+:root {
+    --color-white: #ffffff;
+    --color-text: #424242;
+    --color-border: #eaeaea;
+    --color-background: #f7f4f4;
+    --color-button: #2563eb;
+    --color-but-hover: #1d4ed8;
+    --color-li-hover: #f5f5f5;
+    --transition: all 0.5s ease;
+    --border-radius: 5px;
+} 
+
+body {
+    background-color: var(--color-background)
+}
+
+.search-card {
+    position: fixed;
+    width: 300px;
+    padding: 20px;
+    border-radius: 10px;
+    background: var(--color-white);
+    border: 2px solid var(--color-border);
+}
+
+.search-card h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 0;
+    color: var(--color-text);
+    background-color: var(--color-white)
+}
+
+.input-wrapper {
+    position: relative;
+    width: 100%;
+    display: inline-block;
+
+    input {
+        width: 100%;
+        padding-right:  20px;
+        font-size: 15px;
+    }
+}
+
+.clear-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--color-text);
+    user-select: none;
+}
+
+.search-card input {
+    width: 86%;
+    padding: 10px 20px;
+    border: 2px solid var(--color-border);
+    border-radius: var(--border-radius);
+    background-color: var(--color-white);
+    transition: var(--transition);
+
+    &:focus {
+        outline: none;
+        border-color: var(--color-border) !important;
+    }
+}
+
+.dropdown {
+    list-style: none;
+    padding: 0;
+    margin: 6px 0;
+    border: 2px solid var(--color-border);
+    border-radius: var(--border-radius);
+    background: var(--color-white);
+    max-height: 250px;  
+    opacity: 1; 
+}
+
+.dropdown li {
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.dropdown li:hover {
+    background: var(--color-li-hover);
+}
+
+.icon {
+    width: 22px;
+    height: 16px;
+}
+
+button {
+    width: 100%;
+    background: var(--color-button);
+    color: var(--color-white);
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: var(--transition);
+    margin-top: 10px;
+}
+
+button:hover {
+    background: var(--color-but-hover);
+}
+
+.empty {
+    font-size: 15px;
+    color: var(--color-text);
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.loader_gif {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 15px;
+    margin-bottom: 6px;
+    width: 25px;
+    height: 25px;
+}
