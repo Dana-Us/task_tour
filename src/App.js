@@ -4,8 +4,7 @@ import SearchForm from "./components/javascript/SearchForm";
 function App() {
   const handleSearchSubmit = (selected) => {
     if (selected) {
-      console.log("🔎 Користувач вибрав:", selected);
-      // Тут пізніше викликатимемо startSearchPrices(selected.id)
+      console.log("Користувач вибрав:", selected);
     }
   };
 

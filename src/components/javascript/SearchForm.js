@@ -6,7 +6,6 @@ import "../style/SearchForm.css";
 export default function SearchForm() {
   const {
     query,
-    setQuery,
     options,
     isOpen,
     wrapperRef,
@@ -18,16 +17,24 @@ export default function SearchForm() {
     selected,
   } = useGeoSearch();
 
-  const { searchTours, tours, status, error } = useSearchTours();
+  const { searchTours, status, error } = useSearchTours();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (selected?.type === "country") { 
-      searchTours(selected.id);
-    } else {
-      handleSearch();
+    console.clear();
+
+    let itemToSearch = selected;
+
+    if (!itemToSearch && options.length > 0) {
+      itemToSearch = options[0];
     }
+
+    if (!itemToSearch) {
+      return;
+    }
+
+    searchTours(itemToSearch);
   };
 
   return (
@@ -42,7 +49,7 @@ export default function SearchForm() {
             value={query}
             onChange={(e) => handleChange(e.target.value)}
             onFocus={handleFocus}
-            onKeyDown={handleKeyDown} 
+            onKeyDown={handleKeyDown}
           />
         </div>
 
@@ -61,13 +68,16 @@ export default function SearchForm() {
           </ul>
         )}
 
-      {status === "loading" && <img class="loader_gif" src="/img/loading.gif" alt="Loading..." />}
-      {status === "error" && (
-        <p className="error">Помилка: {error || "Не вдалося знайти тури"}</p>
-      )}
-      {status === "empty" && (
-        <p className="empty">За вашим запитом турів не знайдено</p>
-      )}
+        {status === "loading" && (
+          <img className="loader_gif" src="/img/loading.gif" alt="Loading..." />
+        )}
+        {status === "error" && (
+          <p className="error">Помилка: {error || "Не вдалося знайти тури"}</p>
+        )}
+        {status === "empty" && (
+          <p className="empty">За вашим запитом турів не знайдено</p>
+        )}
+
         <button type="submit">Знайти</button>
       </form>
     </div>

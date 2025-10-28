@@ -38,28 +38,43 @@ export function useGeoSearch() {
       cacheRef.current.countries = withIcons;
       setOptions(withIcons);
     } catch (err) {
-      console.error("Помилка при завантаженні країн:", err);
+      // console.error("Помилка при завантаженні країн:", err);
     }
   };
 
   const fetchGeoResults = async (value) => {
-    if (!value.trim()) return fetchCountries();
+  if (!value.trim()) return fetchCountries();
 
-    if (cacheRef.current[value]) {
-      setOptions(cacheRef.current[value]);
-      return;
-    }
+  const lower = value.toLowerCase();
 
-    try {
-      const res = await searchGeo(value);
-      const data = await res.json();
-      const withIcons = addIcons(data);
-      cacheRef.current[value] = withIcons;
-      setOptions(withIcons);
-    } catch (err) {
-      console.error("Помилка пошуку:", err);
-    }
-  };
+  if (cacheRef.current[value]) {
+    const cached = cacheRef.current[value];
+    const sorted = [...cached].sort((a, b) => {
+      const aMatch = a.name.toLowerCase().startsWith(lower) ? -1 : 1;
+      const bMatch = b.name.toLowerCase().startsWith(lower) ? -1 : 1;
+      return aMatch - bMatch;
+    });
+    setOptions(sorted);
+    return;
+  }
+
+  try {
+    const res = await searchGeo(value);
+    const data = await res.json();
+    const withIcons = addIcons(data);
+
+    const sorted = withIcons.sort((a, b) => {
+      const aMatch = a.name.toLowerCase().startsWith(lower) ? -1 : 1;
+      const bMatch = b.name.toLowerCase().startsWith(lower) ? -1 : 1;
+      return aMatch - bMatch;
+    });
+
+    cacheRef.current[value] = sorted;
+    setOptions(sorted);
+  } catch (err) {
+    // console.error("Помилка пошуку:", err);
+  }
+};
 
   const handleFocus = () => {
     setIsOpen(true);
