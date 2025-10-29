@@ -1,15 +1,16 @@
 import React from "react";
 import SearchForm from "./components/javascript/SearchForm";
+import ToursList from "./components/javascript/ToursList";
 
 function App() {
   const handleSearchSubmit = (selected) => {
     if (selected) {
-      console.log("Користувач вибрав:", selected);
+      // console.log("Користувач вибрав:", selected);
     }
   };
 
   return (
-    <div style={{ display: "flex", gap: "30px", justifyContent: "center", marginTop: "50px" }}>
+    <div>
       <SearchForm onSubmit={handleSearchSubmit}/>
     </div>
   );

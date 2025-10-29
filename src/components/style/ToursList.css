@@ -1,0 +1,94 @@
+.tours-container {
+  width: 700px;
+  padding: 25px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.tours-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  justify-content: center;
+}
+
+@media (max-width: 700px) {
+  .tours-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tours-container {
+    width: 250px;
+  }
+}
+
+@media (min-width:701px) and (max-width: 900px) {
+  .tours-container {
+    width: 600px;
+  }
+}
+
+.tour-card {
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  background: var(--color-white);
+  text-align: center;
+  max-width: 300px;
+  width: 100%;
+}
+
+.hotel-img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+}
+
+.title, p {
+  text-align: left;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.title {
+  color: var(--color-black);
+  font-size: 23px;
+  font-weight: 700;
+}
+
+.price {
+  font-size: 1.2em;
+  font-weight: 700;
+  color: var(--color-black);
+}
+
+p.dates {
+  font-weight: 400;
+
+  &::before {
+    content: "Початок туру";
+    display: block;
+    font-size: 15px;
+    color: var(--color-text);
+    font-weight: 400;
+    margin-bottom: 3px;
+  }
+}
+
+.btn-link {
+  display: inline-block;
+  margin-top: 0;
+  padding: 0;
+  text-align: left;
+  color: var(--color-but-hover);
+  text-decoration: none;
+  font-weight: 500;
+  background-color: transparent;
+  font-size: 16px;
+}
+
+.btn-link:hover {
+  background-color: transparent;
+  color: var(--color-button);
+}

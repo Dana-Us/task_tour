@@ -1,6 +1,7 @@
 import React from "react";
-import { useGeoSearch } from "../javascript/useGeoSearch";
-import { useSearchTours } from "../javascript/useSearchTours"; 
+import {useGeoSearch} from "../javascript/useGeoSearch";
+import {useSearchTours} from "../javascript/useSearchTours"; 
+import ToursList from "./ToursList";
 import "../style/SearchForm.css";
 
 export default function SearchForm() {
@@ -17,7 +18,7 @@ export default function SearchForm() {
     selected,
   } = useGeoSearch();
 
-  const { searchTours, status, error } = useSearchTours();
+  const { searchTours, tours, status, error } = useSearchTours();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,6 +39,7 @@ export default function SearchForm() {
   };
 
   return (
+    <div className="search-wrapper">
     <div className="search-card" ref={wrapperRef}>
       <h2>Форма пошуку турів</h2>
 
@@ -80,6 +82,10 @@ export default function SearchForm() {
 
         <button type="submit">Знайти</button>
       </form>
+
+      
+    </div>
+    <ToursList tours={tours} selected={selected} />
     </div>
   );
 }
