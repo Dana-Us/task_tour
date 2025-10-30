@@ -17,6 +17,7 @@ body {
 .search-card {
     margin-right: auto;
     margin-left: auto;
+    margin-top: 50px;
     width: 300px;
     padding: 20px;
     border-radius: var(--border-radius);

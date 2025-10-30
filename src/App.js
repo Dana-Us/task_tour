@@ -1,18 +1,16 @@
 import React from "react";
 import SearchForm from "./components/javascript/SearchForm";
-import ToursList from "./components/javascript/ToursList";
+import TourPage from "./components/javascript/TourPage";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
-  const handleSearchSubmit = (selected) => {
-    if (selected) {
-      // console.log("Користувач вибрав:", selected);
-    }
-  };
-
   return (
-    <div>
-      <SearchForm onSubmit={handleSearchSubmit}/>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<SearchForm />} />
+        <Route path="/tour/:hotelId/:priceId" element={<TourPage />} />
+      </Routes>
+    </Router>
   );
 }
 

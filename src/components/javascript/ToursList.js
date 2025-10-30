@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { getHotels } from "../../API/api";
+import { formatDate, formatPrice } from "../../utils/format";
 import "../style/ToursList.css";
 
 export default function ToursList({ tours, selected }) {
@@ -40,21 +41,6 @@ export default function ToursList({ tours, selected }) {
 
   if (!tours || tours.length === 0 || !countryID) return null;
 
-  const formatDate = (iso) => {
-    const date = new Date(iso);
-    return date.toLocaleDateString("uk-UA", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
-  };
-
-  const formatPrice = (amount, currency) => {
-    const formatter = new Intl.NumberFormat("uk-UA");
-    const symbols = { usd: "$", eur: "€", uah: "грн" };
-    return `${formatter.format(amount)} ${symbols[currency] || currency}`;
-  };
-
   const toursWithHotels = tours.map((tour) => ({
     ...tour,
     hotel: hotels[tour.hotelID],
@@ -79,7 +65,7 @@ export default function ToursList({ tours, selected }) {
                 {formatDate(tour.startDate)}
               </p>
               <p className="price">{formatPrice(tour.amount, tour.currency)}</p>
-              <button className="btn-link">Відкрити ціну</button>
+              <button className="btn-link"><a href={`/tour/${hotel.id}/${tour.id}`}>Відкрити ціну</a></button>
             </div>
           );
         })}
