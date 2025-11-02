@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getHotel, getPrice } from "../../API/api";
-import { formatDate, formatPrice } from "../../utils/format";
-import "../style/TourPage.css";
+import { getHotel, getPrice } from "../API/api";
+import TourCard from "./TourCard";
 
 export default function TourPage() {
   const { hotelId, priceId } = useParams();
@@ -14,7 +13,6 @@ export default function TourPage() {
   useEffect(() => {
     const loadData = async () => {
       try {
-
         const [hotelRes, priceRes] = await Promise.all([
           getHotel(Number(hotelId)),
           getPrice(priceId),
@@ -39,37 +37,5 @@ export default function TourPage() {
   if (error) return <p className="error">{error}</p>;
   if (!hotel || !price) return <p className="error">Дані не знайдено</p>;
 
-  return (
-    <div className="tour-page">
-        <p className="title">{hotel.name}</p>
-        <p className="hotel-location">
-            {hotel.countryName} — {hotel.cityName}
-        </p>
-
-        <img src={hotel.img} alt={hotel.name} className="hotel-image" />
-
-        <p className="discription">Опис</p>
-        <p className="hotel-description">{hotel.description}</p>
-
-        <p className="discription">Сервіси</p>
-
-        <ul className="services-list">
-        {Object.entries(hotel?.services || {})
-            .filter(([_, value]) => value === "yes") 
-            .map(([key]) => (
-            <li key={key}>{key}</li>
-            ))}
-        </ul>
-
-        <div className="tour-info">
-            <p>
-            {formatDate(price.startDate)} — {formatDate(price.endDate)}
-            </p>
-
-            <p className="price">
-            {formatPrice(price.amount, price.currency)}
-            </p>
-      </div>
-    </div>
-  );
+  return <TourCard hotel={hotel} tour={price} variant="page" />;
 }

@@ -12,7 +12,7 @@
   justify-content: center;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 585px) {
   .tours-grid {
     grid-template-columns: 1fr;
   }
@@ -22,9 +22,9 @@
   }
 }
 
-@media (min-width:701px) and (max-width: 900px) {
+@media (min-width:586px) and (max-width: 768px) {
   .tours-container {
-    width: 600px;
+    width: 520px;
   }
 }
 
@@ -50,7 +50,7 @@
   margin-bottom: 10px;
 }
 
-.title {
+.title-list {
   color: var(--color-black);
   font-size: 23px;
   font-weight: 700;
@@ -62,22 +62,22 @@
   color: var(--color-black);
 }
 
-p.dates {
-  font-weight: 400;
-
-  &::before {
-    content: "Початок туру";
-    display: block;
-    font-size: 15px;
-    color: var(--color-text);
-    font-weight: 400;
-    margin-bottom: 3px;
+.dates {
+  >p:not(.price) {
+    &::before {
+      content: "Початок туру";
+      display: block;
+      font-size: 15px;
+      color: var(--color-text);
+      font-weight: 400;
+      margin-bottom: 3px;
+    }
   }
 }
 
 .btn-link {
   display: inline-block;
-  margin-top: 0;
+  margin-top: 15px;
   padding: 0;
   background-color: transparent;
   text-align: left;

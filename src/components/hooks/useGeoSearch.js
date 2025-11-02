@@ -2,11 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { getCountries, searchGeo } from "../../API/api";
 
 export function useGeoSearch() {
-  const [query, setQuery] = useState(""); 
-  const [options, setOptions] = useState([]); 
-  const [isOpen, setIsOpen] = useState(false); 
+  const [query, setQuery] = useState("");
+  const [options, setOptions] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState(null);
   const wrapperRef = useRef(null);
+  const skipNextSuggestRef = useRef(false);
 
   const ICONS = {
     country: "/img/globe.svg",
@@ -16,19 +17,17 @@ export function useGeoSearch() {
 
   const cacheRef = useRef({});
 
-  const addIcons = (data) => 
-    Object.values(data).map((item) => ({ 
-      ...item, 
-      icon: ICONS[item.type] || ICONS.country, 
+  const addIcons = (data) =>
+    Object.values(data).map((item) => ({
+      ...item,
+      icon: ICONS[item.type] || ICONS.country,
     }));
 
   const fetchCountries = async () => {
-
     if (cacheRef.current.countries) {
       setOptions(cacheRef.current.countries);
       return;
     }
-
     try {
       const res = await getCountries();
       const data = await res.json();
@@ -37,44 +36,40 @@ export function useGeoSearch() {
       );
       cacheRef.current.countries = withIcons;
       setOptions(withIcons);
-    } catch (err) {
-      // console.error("Помилка при завантаженні країн:", err);
-    }
+    } catch {}
   };
 
   const fetchGeoResults = async (value) => {
-  if (!value.trim()) return fetchCountries();
+    if (!value.trim()) return fetchCountries();
 
-  const lower = value.toLowerCase();
+    const lower = value.toLowerCase();
 
-  if (cacheRef.current[value]) {
-    const cached = cacheRef.current[value];
-    const sorted = [...cached].sort((a, b) => {
-      const aMatch = a.name.toLowerCase().startsWith(lower) ? -1 : 1;
-      const bMatch = b.name.toLowerCase().startsWith(lower) ? -1 : 1;
-      return aMatch - bMatch;
-    });
-    setOptions(sorted);
-    return;
-  }
+    if (cacheRef.current[value]) {
+      const cached = cacheRef.current[value];
+      const sorted = [...cached].sort((a, b) => {
+        const aMatch = a.name.toLowerCase().startsWith(lower) ? -1 : 1;
+        const bMatch = b.name.toLowerCase().startsWith(lower) ? -1 : 1;
+        return aMatch - bMatch;
+      });
+      setOptions(sorted);
+      return;
+    }
 
-  try {
-    const res = await searchGeo(value);
-    const data = await res.json();
-    const withIcons = addIcons(data);
+    try {
+      const res = await searchGeo(value);
+      const data = await res.json();
+      const withIcons = addIcons(data);
 
-    const sorted = withIcons.sort((a, b) => {
-      const aMatch = a.name.toLowerCase().startsWith(lower) ? -1 : 1;
-      const bMatch = b.name.toLowerCase().startsWith(lower) ? -1 : 1;
-      return aMatch - bMatch;
-    });
+      const sorted = withIcons.sort((a, b) => {
+        const aMatch = a.name.toLowerCase().startsWith(lower) ? -1 : 1;
+        const bMatch = b.name.toLowerCase().startsWith(lower) ? -1 : 1;
+        return aMatch - bMatch;
+      });
 
-    cacheRef.current[value] = sorted;
-    setOptions(sorted);
-  } catch (err) {
-    // console.error("Помилка пошуку:", err);
-  }
-};
+      cacheRef.current[value] = sorted;
+      setOptions(sorted);
+    } catch {}
+  };
 
   const handleFocus = () => {
     setIsOpen(true);
@@ -82,30 +77,35 @@ export function useGeoSearch() {
     if (!query) {
       fetchCountries();
     } else if (selected?.type === "country") {
-      fetchCountries().then(() => {
-        setOptions((prev) => {
-          const sorted = [...prev];
-          const idx = sorted.findIndex((i) => i.id === selected.id);
-          if (idx > 0) {
-            const [chosen] = sorted.splice(idx, 1);
-            sorted.unshift(chosen);
-          }
-          return sorted;
-        });
-      });
+      fetchCountries();
     } else {
       fetchGeoResults(query);
     }
   };
 
-  const handleChange = (value) => {
-    setQuery(value);
-  };
+  useEffect(() => {
+    if (skipNextSuggestRef.current) {
+      skipNextSuggestRef.current = false;
+      return;
+    }
+
+    if (query.trim()) {
+      setIsOpen(true);
+      fetchGeoResults(query);
+    } else {
+      fetchCountries();
+    }
+  }, [query]);
 
   const handleSelect = (item) => {
+    skipNextSuggestRef.current = true;
     setSelected(item);
     setQuery(item.name);
     setIsOpen(false);
+  };
+
+  const handleChange = (value) => {
+    setQuery(value);
   };
 
   const handleSearch = (e) => {
@@ -116,7 +116,7 @@ export function useGeoSearch() {
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      e.preventDefault();
+      // e.preventDefault();
       handleSearch();
     }
   };
@@ -131,7 +131,7 @@ export function useGeoSearch() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-return {
+  return {
     query,
     setQuery,
     options,

@@ -1,6 +1,6 @@
 import React from "react";
-import SearchForm from "./components/javascript/SearchForm";
-import TourPage from "./components/javascript/TourPage";
+import SearchForm from "./components/SearchForm";
+import TourPage from "./components/TourPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
